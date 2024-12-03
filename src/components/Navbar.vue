@@ -23,8 +23,8 @@ function toggleActive() {
         <a href="#lokasi">Lokasi</a>
       </div>
       <div class="navbar-n">
-        <a href="masuk.html" class="masuk">Masuk</a>
-        <a href="daftar.html" class="daftar">Daftar</a>
+        <RouterLink class="masuk" to="/auth/login">Masuk</RouterLink>
+        <RouterLink class="daftar" to="/auth/register">Daftar</RouterLink>
 
         <font-awesome-icon
           @click="toggleActive"
@@ -108,6 +108,10 @@ function toggleActive() {
 @media screen and (max-width: 758px) {
   .navbar-logo {
     width: 10%;
+  }
+
+  .navbar-logo img {
+    width: 50px;
   }
 
   #hamburger-menu {

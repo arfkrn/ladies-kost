@@ -1,8 +1,11 @@
 <script setup>
 import { RouterLink } from "vue-router";
+import Navbar from "@/components/Navbar.vue";
+import Footer from "@/components/Footer.vue";
 </script>
 
 <template>
+  <Navbar />
   <!-- hero xection start -->
   <section class="hero" id="home">
     <div class="content">
@@ -10,7 +13,7 @@ import { RouterLink } from "vue-router";
       <h2>Nyaman Di <span>Ladies Kost</span></h2>
       <h4>HEMAT AS YOU WISH</h4>
       <div class="cta-container">
-        <RouterLink to="/sewa" class="cta">Sewa Sekarang</RouterLink>
+        <RouterLink to="/penawaran" class="cta">Sewa Sekarang</RouterLink>
       </div>
     </div>
   </section>
@@ -119,6 +122,7 @@ import { RouterLink } from "vue-router";
     </div>
   </section>
   <!-- lokasi section end -->
+  <Footer />
 </template>
 
 <style scoped>
@@ -305,10 +309,6 @@ import { RouterLink } from "vue-router";
 }
 
 @media screen and (max-width: 758px) {
-  .hero .content {
-    align-items: center;
-  }
-
   .hero .content h2 {
     font-size: 1.2rem;
   }

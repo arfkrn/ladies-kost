@@ -1,8 +1,10 @@
 <script setup>
 import { RouterLink } from "vue-router";
+import Navbar from "@/components/Navbar.vue";
 </script>
 
 <template>
+  <Navbar />
   <section class="menu">
     <div class="menu-n">
       <RouterLink to="/"
@@ -14,7 +16,18 @@ import { RouterLink } from "vue-router";
 
     <div class="row">
       <div class="menu-card">
-        <RouterLink to="detail">
+        <RouterLink to="/penawaran/detail">
+          <img src="../assets/image/kamar3 2.png" alt="" />
+          <h2>Kamar 1</h2>
+          <p class="alamat">Metro, Lampung</p>
+          <div class="harga">
+            <p>Mulai</p>
+            <h1>IDR 500.000 <span>/bulan</span></h1>
+          </div>
+        </RouterLink>
+      </div>
+      <div class="menu-card">
+        <RouterLink to="/penawaran/detail">
           <img src="../assets/image/kamar3 2.png" alt="" />
           <h2>Kamar 1</h2>
           <p class="alamat">Metro, Lampung</p>
@@ -54,8 +67,9 @@ import { RouterLink } from "vue-router";
 
 .menu .row {
   display: flex;
-  margin: 2rem 0 5rem 0;
-  justify-content: space-around;
+  margin-block: 2rem 5rem;
+  flex-wrap: wrap;
+  gap: 3rem;
 }
 
 .menu .row .menu-card {
@@ -101,5 +115,25 @@ import { RouterLink } from "vue-router";
 .menu .row .menu-card .harga span {
   font-size: 0.8rem;
   font-weight: 400;
+}
+
+@media screen and (max-width: 758px) {
+  .menu {
+    padding-block: 0;
+    margin-top: 5rem;
+    margin-left: 0;
+  }
+
+  .menu .row .menu-card h2 {
+    font-size: 0rem;
+  }
+
+  .menu .menu-n .i-h1 {
+    font-size: 0.9rem;
+  }
+
+  .menu .menu-n span {
+    font-size: 0.9rem;
+  }
 }
 </style>
