@@ -1,23 +1,37 @@
 <script setup>
-import { RouterLink } from "vue-router";
-import { ref } from "vue";
-import ImageSlideshow from "@/components/ImageSlideshow.vue";
+import { RouterLink, useRoute } from "vue-router";
+import { onBeforeMount, reactive, ref } from "vue";
 import PriceSelect from "@/components/PriceSelect.vue";
 import Navbar from "@/components/Navbar.vue";
+import ImageSlideshow from "@/components/ImageSlideshow.vue";
+import { useKostStore } from "@/stores/kostStore";
 
-const harga = ref("300.000");
-const hargas = [
-  "300.000",
-  "600.000",
-  "900.000",
-  "1.200.000",
-  "1.500.000",
-  "1.800.000",
-];
+const route = useRoute();
+const harga = ref("500.000");
+const hargas = ["500.000", "800.000", "3.000.000", "3.500.000"];
+const kostStore = useKostStore();
+const kostId = route.query.id;
+const monthState = ref(1);
+const state = reactive({ data: {} });
 
 function changeMonth(m) {
   harga.value = hargas[m - 1];
+  monthState.value = m;
 }
+
+function getData() {
+  kostStore.fetchKosts();
+
+  for (let i = 0; i < kostStore.kosts.length; i++) {
+    if (kostStore.kosts[i].id === Number(kostId)) {
+      state.data = kostStore.kosts[i];
+    }
+  }
+}
+
+onBeforeMount(() => {
+  getData();
+});
 </script>
 
 <template>
@@ -25,14 +39,16 @@ function changeMonth(m) {
   <section class="details">
     <div class="details-container">
       <div class="hh">
-        <RouterLink to="/"
+        <RouterLink to="/penawaran"
           ><font-awesome-icon
             class="i-details"
             :icon="['fas', 'arrow-left']"
-          /><span>Kamar 1</span></RouterLink
+          /><span>{{ state.data.nama }}</span></RouterLink
         >
       </div>
-      <ImageSlideshow />
+
+      <ImageSlideshow :kostId="kostId" />
+
       <p class="p-p">
         Ladies Kost menawarkan kamar per bulan yang nyaman dan terjangkau, ideal
         untuk Anda yang mencari hunian dengan suasana tenang dan aman. Setiap
@@ -47,7 +63,14 @@ function changeMonth(m) {
       <div class="detail-footer">
         <PriceSelect @change-month="changeMonth" />
         <div class="harga">Rp. {{ harga }} /bulan</div>
-        <RouterLink class="btn-pesan" to="/checkout">Pesan</RouterLink>
+        <RouterLink
+          class="btn-pesan"
+          :to="{
+            name: 'checkout',
+            query: { id: kostId, durasi: monthState },
+          }"
+          >Pesan</RouterLink
+        >
       </div>
     </div>
   </section>
@@ -58,6 +81,7 @@ function changeMonth(m) {
   padding: 1.4rem 7%;
   margin-top: 8rem;
   margin-left: 2rem;
+  margin-bottom: 4rem;
 }
 
 .details .details-container {
@@ -66,6 +90,11 @@ function changeMonth(m) {
   box-shadow: -1px 7px 14px 0px rgba(166, 161, 166, 1);
   padding: 2rem;
   border-radius: 10px;
+}
+
+.detail-thumbnail img {
+  width: 100%;
+  border-radius: 5px;
 }
 
 .details .details-container .hh {

@@ -132,20 +132,13 @@ import Footer from "@/components/Footer.vue";
   display: flex;
   align-items: center;
   background-image: url("../assets/image/Group1.jpg");
+  background-size: cover;
   background-repeat: no-repeat;
-  background-position: center;
-  position: relative;
-}
-
-.hero::after {
-  content: "";
-  display: block;
-  position: absolute;
-  height: 30%;
+  background-position: center top;
 }
 
 .hero .content {
-  padding: 1.4rem 7%;
+  padding: 0 7%;
   color: #fff;
   display: flex;
   flex-direction: column;
@@ -223,7 +216,7 @@ import Footer from "@/components/Footer.vue";
 
 .fasilitas .fasilitas-content.kamar p {
   font-size: 0.9rem;
-  text-align: justify;
+  /* text-align: justify; */
 }
 
 .fasilitas .fasilitas-content.kamar h1 {
@@ -309,6 +302,10 @@ import Footer from "@/components/Footer.vue";
 }
 
 @media screen and (max-width: 758px) {
+  .hero .content {
+    padding-inline: 5%;
+  }
+
   .hero .content h2 {
     font-size: 1.2rem;
   }
@@ -323,6 +320,10 @@ import Footer from "@/components/Footer.vue";
     padding: 0.2rem 0.8rem;
   }
 
+  .fasilitas {
+    padding-inline: 5%;
+  }
+
   .fasilitas .tempat {
     font-size: 1.2rem;
   }
@@ -333,6 +334,7 @@ import Footer from "@/components/Footer.vue";
 
   .tentang .tentang-container {
     flex-wrap: wrap;
+    padding-inline: 5%;
   }
 
   .tentang .tentang-h1 {
@@ -344,11 +346,15 @@ import Footer from "@/components/Footer.vue";
   }
 
   .tentang .tentang-h1::after {
-    width: 6.9rem;
+    width: 6rem;
   }
 
   .tentang .tentang-container .tentang-p p {
     font-size: 0.8rem;
+  }
+
+  .lokasi {
+    padding-inline: 5%;
   }
 
   .lokasi .lokasi-container {

@@ -1,40 +1,92 @@
+<script setup>
+import axios from "axios";
+import { reactive, onMounted } from "vue";
+import router from "@/router";
+
+const dataForm = reactive({ nama: "", email: "", password: "" });
+const errorForm = reactive({
+  namaError: "",
+  emailError: "",
+  passwordError: "",
+});
+
+const register = async () => {
+  try {
+    const res = await axios.post(
+      "http://localhost:4000/api/v1/auth/register",
+      dataForm
+    );
+
+    if (res.data.success) {
+      router.push("/auth/login");
+    }
+  } catch (err) {
+    const errors = err.response.data.errors;
+
+    errorForm.namaError = errors.nama;
+    errorForm.emailError = errors.email;
+    errorForm.passwordError = errors.password;
+  }
+};
+</script>
+
 <template>
   <div class="register-container">
     <div class="register-box">
       <h2>Register</h2>
       <form>
-        <label for="nama">Nama</label>
-        <input
-          type="text"
-          id="nama"
-          name="nama"
-          placeholder="Enter your name"
-          required
-        />
+        <div class="nama-field">
+          <label for="nama">Nama</label>
+          <input
+            type="text"
+            v-model="dataForm.nama"
+            id="nama"
+            name="nama"
+            placeholder="Enter your name"
+            required
+          />
+          <p v-if="errorForm.namaError" class="error-field">
+            {{ errorForm.namaError }}
+          </p>
+        </div>
 
-        <label for="email">Email</label>
-        <input
-          type="email"
-          id="email"
-          name="email"
-          placeholder="Enter your email"
-          required
-        />
+        <div class="email-field">
+          <label for="email">Email</label>
+          <input
+            type="email"
+            v-model="dataForm.email"
+            id="email"
+            name="email"
+            placeholder="Enter your email"
+            required
+          />
+          <p v-if="errorForm.emailError" class="error-field">
+            {{ errorForm.emailError }}
+          </p>
+        </div>
 
-        <label for="password">Password</label>
-        <input
-          type="password"
-          id="password"
-          name="password"
-          placeholder="Enter your password"
-          required
-        />
+        <div class="password-field">
+          <label for="password">Password</label>
+          <input
+            type="password"
+            v-model="dataForm.password"
+            id="password"
+            name="password"
+            placeholder="Enter your password"
+            required
+          />
+          <p v-if="errorForm.passwordError" class="error-field">
+            {{ errorForm.passwordError }}
+          </p>
+        </div>
       </form>
 
-      <button type="submit" class="register-btn">Register</button>
+      <button type="submit" @click="register" class="register-btn">
+        Register
+      </button>
 
       <p class="signin-link">
-        Belum punya akun? daftar
+        Sudah punya akun? login
         <RouterLink to="/auth/login">disini</RouterLink>
       </p>
 
@@ -58,37 +110,46 @@
 <style scoped>
 .register-container {
   width: 100%;
-  max-width: 400px;
-  background-color: #eaeaea;
-  border-radius: 10px;
-  padding: 20px;
-  margin: 3.3% auto;
+  height: 90vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .register-box {
+  width: 35%;
+  padding: 1rem;
+  background-color: #eaeaea;
   text-align: center;
+  margin: 0 auto;
+  border-radius: 10px;
 }
 
 .register-box h2 {
-  margin-bottom: 20px;
+  margin-bottom: 40px;
+}
+
+.nama-field,
+.email-field,
+.password-field {
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  gap: 0.5rem;
 }
 
 form {
   display: flex;
   flex-direction: column;
-}
-
-label {
-  text-align: left;
-  margin-bottom: 5px;
+  gap: 0.8rem;
 }
 
 input {
   padding: 10px;
-  margin-bottom: 15px;
   border: 1px solid #ccc;
   border-radius: 10px;
-  font-size: 16px;
+  font-size: 14px;
+  width: 100%;
 }
 
 .register-btn {
@@ -141,5 +202,29 @@ input {
 
 .facebook-btn:hover {
   background-color: #e9effb;
+}
+
+.error-field {
+  color: red;
+  font-size: 0.7rem;
+  margin-left: 0.5rem;
+}
+
+@media screen and (max-width: 758px) {
+  .register-box h2 {
+    font-size: 1.4rem;
+  }
+
+  .register-box {
+    width: 80%;
+  }
+
+  label {
+    font-size: 14px;
+  }
+
+  input {
+    font-size: 13px;
+  }
 }
 </style>

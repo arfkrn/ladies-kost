@@ -1,6 +1,14 @@
 <script setup>
 import { RouterLink } from "vue-router";
+import { onMounted } from "vue";
 import Navbar from "@/components/Navbar.vue";
+import { useKostStore } from "@/stores/kostStore";
+
+const kostStore = useKostStore();
+
+onMounted(() => {
+  kostStore.fetchKosts();
+});
 </script>
 
 <template>
@@ -15,25 +23,28 @@ import Navbar from "@/components/Navbar.vue";
     </div>
 
     <div class="row">
-      <div class="menu-card">
-        <RouterLink to="/penawaran/detail">
-          <img src="../assets/image/kamar3 2.png" alt="" />
-          <h2>Kamar 1</h2>
-          <p class="alamat">Metro, Lampung</p>
-          <div class="harga">
-            <p>Mulai</p>
-            <h1>IDR 500.000 <span>/bulan</span></h1>
-          </div>
-        </RouterLink>
-      </div>
-      <div class="menu-card">
-        <RouterLink to="/penawaran/detail">
-          <img src="../assets/image/kamar3 2.png" alt="" />
-          <h2>Kamar 1</h2>
-          <p class="alamat">Metro, Lampung</p>
-          <div class="harga">
-            <p>Mulai</p>
-            <h1>IDR 500.000 <span>/bulan</span></h1>
+      <div class="menu-card" v-for="kost in kostStore.kosts">
+        <RouterLink :to="{ name: 'detail', query: { id: kost.id } }">
+          <div class="card-content">
+            <div class="card-image">
+              <img
+                :src="
+                  'http://localhost:4000/uploads/' + kost.gambar[0].imageUrl
+                "
+                alt="thumbnail"
+              />
+            </div>
+            <div class="card-detail">
+              <h2>{{ kost.nama }}</h2>
+              <p class="alamat">Metro, Lampung</p>
+              <div class="harga">
+                <p>Mulai</p>
+                <h1>
+                  IDR {{ kost.harga.toLocaleString("id-ID") }}
+                  <span>/bulan</span>
+                </h1>
+              </div>
+            </div>
           </div>
         </RouterLink>
       </div>
@@ -46,7 +57,7 @@ import Navbar from "@/components/Navbar.vue";
   min-height: 500px;
   margin-top: 8rem;
   margin-left: 2rem;
-  padding: 1.4rem 7%;
+  padding-inline: 7%;
 }
 
 .menu .menu-n {
@@ -72,6 +83,12 @@ import Navbar from "@/components/Navbar.vue";
   gap: 3rem;
 }
 
+.card-content {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
 .menu .row .menu-card {
   border-radius: 10px;
   padding: 1rem;
@@ -80,60 +97,72 @@ import Navbar from "@/components/Navbar.vue";
   box-shadow: -1px 7px 14px 0px rgba(166, 161, 166, 1);
 }
 
+.card-image {
+  width: 200px;
+}
+
 .menu .row .menu-card img {
   width: 100%;
-  border-radius: 10px;
+  height: auto;
+  border-radius: 4px;
 }
 
-.menu .row .menu-card h2 {
-  color: black;
+.card-detail {
+  color: #000;
+}
+
+.menu-card .card-detail h2 {
   font-size: 1.1rem;
-  padding: 1rem;
 }
 
-.menu .row .menu-card .alamat {
-  color: #949494;
-  padding: 1rem;
-  margin-top: -1.5rem;
-  font-size: 0.7rem;
+.card-detail p {
+  font-size: 0.9rem;
 }
 
-.menu .row .menu-card .harga {
-  padding-inline: 1rem;
-}
-
-.menu .row .menu-card .harga p {
-  color: black;
-}
-
-.menu .row .menu-card .harga h1 {
-  color: #000000;
-  font-size: 1.2rem;
-  padding-bottom: 3rem;
-}
-
-.menu .row .menu-card .harga span {
+.card-detail .alamat {
+  color: rgb(177, 177, 177);
   font-size: 0.8rem;
-  font-weight: 400;
+}
+
+.harga {
+  margin-top: 1rem;
+}
+
+.harga h1 {
+  font-size: 1rem;
+}
+
+.harga span {
+  font-weight: 500;
+  font-size: 0.7rem;
 }
 
 @media screen and (max-width: 758px) {
   .menu {
-    padding-block: 0;
+    padding-inline: 5%;
     margin-top: 5rem;
     margin-left: 0;
   }
 
-  .menu .row .menu-card h2 {
-    font-size: 0rem;
+  .menu-card {
+    flex-grow: 1;
   }
 
   .menu .menu-n .i-h1 {
-    font-size: 0.9rem;
+    font-size: 1rem;
+    margin-right: 8px;
   }
 
   .menu .menu-n span {
-    font-size: 0.9rem;
+    font-size: 1rem;
+  }
+
+  .menu .row {
+    justify-content: center;
+  }
+
+  .card-image {
+    width: 100%;
   }
 }
 </style>

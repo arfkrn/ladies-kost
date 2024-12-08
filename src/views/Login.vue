@@ -53,19 +53,23 @@ import { RouterLink } from "vue-router";
 <style scoped>
 .login-container {
   width: 100%;
-  max-width: 400px;
-  background-color: #eaeaea;
-  border-radius: 10px;
-  padding: 20px;
-  margin: 6% auto;
+  height: 90vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .login-box {
+  width: 35%;
+  padding: 1rem;
+  background-color: #eaeaea;
   text-align: center;
+  margin: 0 auto;
+  border-radius: 10px;
 }
 
 .login-box h2 {
-  margin-bottom: 20px;
+  margin-bottom: 40px;
 }
 
 form {
@@ -83,7 +87,7 @@ input {
   margin-bottom: 15px;
   border: 1px solid #ccc;
   border-radius: 10px;
-  font-size: 16px;
+  font-size: 14px;
 }
 
 .login-btn {
@@ -140,24 +144,19 @@ input {
 
 @media screen and (max-width: 758px) {
   .login-box h2 {
-    font-size: 1.2rem;
+    font-size: 1.4rem;
+  }
+
+  .login-box {
+    width: 80%;
   }
 
   label {
-    font-size: 0.8rem;
+    font-size: 14px;
   }
 
   input {
-    font-size: 0.8rem;
-  }
-
-  .login-btn {
-    font-size: 1rem;
-    padding: 10px;
-  }
-
-  .signup-link {
-    font-size: 0.7rem;
+    font-size: 13px;
   }
 }
 </style>

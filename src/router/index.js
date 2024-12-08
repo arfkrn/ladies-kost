@@ -26,6 +26,7 @@ const router = createRouter({
     },
     {
       path: "/checkout",
+      name: "checkout",
       component: Checkout,
     },
     {
@@ -53,5 +54,17 @@ const router = createRouter({
     return { top: 0 };
   },
 });
+
+// Redirect pengguna ke halaman login jika belum login
+// router.beforeEach(async (to) => {
+//   const publicPages = ["/login"];
+//   const authRequired = !publicPages.includes(to.path);
+//   const auth = useAuthStore();
+
+//   if (authRequired && !auth.user) {
+//     auth.returnUrl = to.fullPath;
+//     return "/login";
+//   }
+// });
 
 export default router;

@@ -71,6 +71,10 @@ footer .credit a {
 }
 
 @media screen and (max-width: 758px) {
+  .footer-container {
+    padding-inline: 5%;
+  }
+
   .footer-container .socials a {
     font-size: 1.2rem;
   }

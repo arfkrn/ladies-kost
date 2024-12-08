@@ -106,6 +106,10 @@ function toggleActive() {
 }
 
 @media screen and (max-width: 758px) {
+  .navbar {
+    padding-inline: 5%;
+  }
+
   .navbar-logo {
     width: 10%;
   }
@@ -124,7 +128,7 @@ function toggleActive() {
     right: -100%;
     background-color: #fff;
     width: 13rem;
-    height: 100vh;
+    transition: 0.4s;
   }
 
   .navbar .navbar-n {
