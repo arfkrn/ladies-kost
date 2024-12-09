@@ -86,7 +86,7 @@ onMounted(() => {
 .menu {
   list-style: none;
   padding: 0.2rem 0.5rem;
-  background: #3d88eb;
+  background: #323741;
   box-shadow: 0, 0.5rem, 1rem, rgba(0, 0, 0, 0.2);
   border-radius: 0.5rem;
   color: #fff;
@@ -102,18 +102,18 @@ onMounted(() => {
 
 .menu li {
   margin: 0.3rem 0;
-  border-radius: 0.5rem;
+  border-radius: 0.2rem;
   cursor: pointer;
   font-size: 0.9rem;
   padding: 0.1rem;
 }
 
 .menu li:hover {
-  background: #2f6ab8bb;
+  background: #23242a;
 }
 
 .active {
-  background: #20579e;
+  background: #23242a;
 }
 
 .menu-open {

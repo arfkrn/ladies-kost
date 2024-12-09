@@ -123,7 +123,7 @@ onMounted(() => {
 }
 
 .menu li:hover {
-  background: #2a2d35;
+  background: #23242a;;
   padding: 0.1rem;
 }
 

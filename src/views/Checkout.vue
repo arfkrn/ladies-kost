@@ -1,30 +1,71 @@
 <script setup>
 import PaymentSelect from "@/components/PaymentSelect.vue";
-import axios from "axios";
-import { onMounted, reactive } from "vue";
+import { onBeforeMount, onMounted, reactive } from "vue";
 import { useRoute } from "vue-router";
+import { useKostStore } from "@/stores/kostStore";
 
 const route = useRoute();
 const state = reactive({ data: {} });
-
-const fetchData = async () => {
-  const res = await axios.get(
-    "http://localhost:4000/api/v1/kost/" + route.query.id
-  );
-  state.data = res.data.data;
-  console.log(state.data.gambar[0]);
+const kostStore = useKostStore();
+const kostIndex = route.query.id;
+const queryParam = route.query.durasi;
+const result = reactive({ data: { harga: 0, addon: 0, durasi: null } });
+let total = 0;
+const harga = {
+  i1: 500000,
+  i2: 3000000,
+};
+const addon = {
+  i1: 300000,
+  i2: 500000,
+};
+const durasi = {
+  i1: "1 Bulan",
+  i2: "1 Tahun",
 };
 
-onMounted(() => {
-  fetchData();
+function calculateTotal() {
+  switch (queryParam) {
+    case "1":
+      result.data.harga = harga.i1;
+      result.data.durasi = durasi.i1;
+      break;
+    case "2":
+      result.data.harga = harga.i1;
+      result.data.addon = addon.i1;
+      result.data.durasi = durasi.i1;
+      break;
+    case "3":
+      result.data.harga = harga.i2;
+      result.data.durasi = durasi.i2;
+      break;
+    case "4":
+      result.data.harga = harga.i2;
+      result.data.addon = addon.i2;
+      result.data.durasi = durasi.i2;
+      break;
+  }
+
+  total = result.data.harga + result.data.addon;
+}
+
+function getData() {
+  kostStore.fetchKosts();
+  state.data = kostStore.kosts[kostIndex];
+}
+
+onBeforeMount(() => {
+  getData();
 });
+
+onMounted(calculateTotal);
 </script>
 
 <template>
   <div class="checkout-container">
     <div class="checkout-header">
       <div class="back">
-        <RouterLink to="/penawaran/detail"
+        <RouterLink :to="{ name: 'detail', query: { id: state.data.id } }"
           ><font-awesome-icon
             class="kembali"
             :icon="['fas', 'arrow-left']"
@@ -35,14 +76,15 @@ onMounted(() => {
 
     <div class="checkout-content">
       <div class="detail-kamar">
-        <!-- <img
-          :src="'http://localhost:4000' + state.data.gambar[0].imageUrl"
+        <img
+          :src="
+            'http://localhost:4000/uploads/' + state.data.gambar[0].imageUrl
+          "
           alt=""
           class="detail-img"
-        /> -->
+        />
         <div class="detail-info">
           <h1 class="detail-title">{{ state.data.nama }}</h1>
-          <!-- <p class="detail-p">1 Bulan</p> -->
         </div>
       </div>
       <div class="rincian-container">
@@ -51,21 +93,21 @@ onMounted(() => {
           <div class="rincian-durasi">
             <div class="durasi">
               <p>Durasi</p>
-              <p class="waktu">1 Bulan</p>
+              <p class="waktu">{{ result.data.durasi }}</p>
             </div>
-            <p>Rp500.000</p>
+            <p>Rp{{ total.toLocaleString("id-ID") }}</p>
           </div>
           <div class="rincian-addon">
             <div class="addon">
               <p>Addon</p>
               <p>WiFi</p>
             </div>
-            <p>Rp300.000</p>
+            <p>Rp {{ result.data.addon }}</p>
           </div>
           <div class="rincian-total">
             <div>
               <p>Total</p>
-              <p class="total">Rp800.000</p>
+              <p class="total">Rp{{ total.toLocaleString("id-ID") }}</p>
             </div>
           </div>
         </div>
@@ -80,7 +122,7 @@ onMounted(() => {
         <div class="pesan">
           <div class="pesan-detail">
             <p>Total Bayar</p>
-            <h1>Rp800.000</h1>
+            <h1>Rp{{ total.toLocaleString("id-ID") }}</h1>
           </div>
           <div>
             <button class="pesan-btn">Pesan Sekarang</button>

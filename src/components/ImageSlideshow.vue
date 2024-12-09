@@ -8,17 +8,12 @@ const images = ref([]);
 const itemRefs = useTemplateRef("items");
 
 const props = defineProps({
-  kostId: String,
+  kostIndex: Number,
 });
 
 function getData() {
   kostStore.fetchKosts();
-
-  for (let i = 0; i < kostStore.kosts.length; i++) {
-    if (kostStore.kosts[i].id === Number(props.kostId)) {
-      images.value = kostStore.kosts[i].gambar;
-    }
-  }
+  images.value = kostStore.kosts[props.kostIndex].gambar;
 }
 
 function nextSlide() {
@@ -38,7 +33,6 @@ onMounted(() => {
 });
 
 function showSlides(n) {
-  // console.log(itemRefs.value[0]);
   let i;
   if (n > itemRefs.value.length) {
     slideIndex.value = 1;

@@ -11,6 +11,7 @@ const harga = ref("500.000");
 const hargas = ["500.000", "800.000", "3.000.000", "3.500.000"];
 const kostStore = useKostStore();
 const kostId = route.query.id;
+const kostIndex = ref(0);
 const monthState = ref(1);
 const state = reactive({ data: {} });
 
@@ -24,6 +25,7 @@ function getData() {
 
   for (let i = 0; i < kostStore.kosts.length; i++) {
     if (kostStore.kosts[i].id === Number(kostId)) {
+      kostIndex.value = i;
       state.data = kostStore.kosts[i];
     }
   }
@@ -47,7 +49,7 @@ onBeforeMount(() => {
         >
       </div>
 
-      <ImageSlideshow :kostId="kostId" />
+      <ImageSlideshow :kostIndex="kostIndex" />
 
       <p class="p-p">
         Ladies Kost menawarkan kamar per bulan yang nyaman dan terjangkau, ideal
@@ -67,7 +69,7 @@ onBeforeMount(() => {
           class="btn-pesan"
           :to="{
             name: 'checkout',
-            query: { id: kostId, durasi: monthState },
+            query: { id: kostIndex, durasi: monthState },
           }"
           >Pesan</RouterLink
         >
