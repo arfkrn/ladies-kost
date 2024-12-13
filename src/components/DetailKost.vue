@@ -1,35 +1,55 @@
 <script setup>
-import { RouterLink, useRoute } from "vue-router";
-import { onBeforeMount, reactive, ref } from "vue";
-import PriceSelect from "@/components/PriceSelect.vue";
-import Navbar from "@/components/Navbar.vue";
-import ImageSlideshow from "@/components/ImageSlideshow.vue";
-import { useKostStore } from "@/stores/kostStore";
-import DetailKost from "@/components/DetailKost.vue";
+import { ref } from "vue";
+import axios from "axios";
 
-const route = useRoute();
-const harga = ref("500.000");
-const hargas = ["500.000", "800.000", "3.000.000", "3.500.000"];
-const kostStore = useKostStore();
-const kostId = route.query.id;
+const props = defineProps(["id"]);
 const kost = ref(null);
-const kostIndex = ref(0);
-const monthState = ref(1);
-const state = reactive({ data: {} });
 
-function changeMonth(m) {
-    harga.value = hargas[m - 1];
-    monthState.value = m;
-}
+await axios.get("http://localhost:3000/api/v1/kost/" + props.id).then((res) => {
+    kost.value = res.data.data;
+});
 </script>
 
 <template>
-    <Navbar />
-    <Suspense>
-        <DetailKost :id="kostId" />
+    <section class="details">
+        <div class="details-container">
+            <div class="hh">
+                <RouterLink to="/penawaran"
+                    ><font-awesome-icon
+                        class="i-details"
+                        :icon="['fas', 'arrow-left']"
+                    /><span>{{ kost.nomor }}</span></RouterLink
+                >
+            </div>
 
-        <template #fallback>Loading...</template>
-    </Suspense>
+            <ImageSlideshow :kostIndex="kostIndex" />
+
+            <p class="p-p">
+                Ladies Kost menawarkan kamar per bulan yang nyaman dan
+                terjangkau, ideal untuk Anda yang mencari hunian dengan suasana
+                tenang dan aman. Setiap kamar dirancang dengan baik, dilengkapi
+                dengan fasilitas esensial seperti tempat tidur, lemari, dan
+                kamar mandi untuk menunjang aktivitas harian Anda.
+            </p>
+            <h3 class="p-p">
+                Pesan kamar Anda sekarang dan rasakan kenyamanan tinggal di
+                Ladies Kost!
+            </h3>
+
+            <div class="detail-footer">
+                <PriceSelect @change-month="changeMonth" />
+                <div class="harga">Rp. {{ harga }} /bulan</div>
+                <RouterLink
+                    class="btn-pesan"
+                    :to="{
+                        name: 'checkout',
+                        query: { id: kostIndex, durasi: monthState },
+                    }"
+                    >Pesan</RouterLink
+                >
+            </div>
+        </div>
+    </section>
 </template>
 
 <style scoped>

@@ -1,15 +1,7 @@
 <script setup>
 import { RouterLink } from "vue-router";
-import { onMounted } from "vue";
 import Navbar from "@/components/Navbar.vue";
 import ListKost from "@/components/ListKost.vue";
-import { useKostStore } from "@/stores/kostStore";
-
-// const kostStore = useKostStore();
-
-// onMounted(() => {
-//   kostStore.fetchKosts();
-// });
 </script>
 
 <template>
