@@ -1,13 +1,23 @@
 <script setup>
 import { ref } from "vue";
 import axios from "axios";
+import ImageSlideshow from "./ImageSlideshow.vue";
+import PriceSelect from "./PriceSelect.vue";
 
 const props = defineProps(["id"]);
 const kost = ref(null);
+const monthState = ref(1);
+const harga = ref("500.000");
+const hargas = ["500.000", "800.000", "3.000.000", "3.500.000"];
 
-await axios.get("http://localhost:3000/api/v1/kost/" + props.id).then((res) => {
+await axios.get("http://localhost:4000/api/v1/kost/" + props.id).then((res) => {
     kost.value = res.data.data;
 });
+
+function changeMonth(m) {
+    harga.value = hargas[m - 1];
+    monthState.value = m;
+}
 </script>
 
 <template>
@@ -22,7 +32,7 @@ await axios.get("http://localhost:3000/api/v1/kost/" + props.id).then((res) => {
                 >
             </div>
 
-            <ImageSlideshow :kostIndex="kostIndex" />
+            <ImageSlideshow :images="kost.gambar" />
 
             <p class="p-p">
                 Ladies Kost menawarkan kamar per bulan yang nyaman dan
@@ -43,7 +53,7 @@ await axios.get("http://localhost:3000/api/v1/kost/" + props.id).then((res) => {
                     class="btn-pesan"
                     :to="{
                         name: 'checkout',
-                        query: { id: kostIndex, durasi: monthState },
+                        query: { id: kost.id, durasi: monthState },
                     }"
                     >Pesan</RouterLink
                 >

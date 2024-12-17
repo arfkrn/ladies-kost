@@ -2,6 +2,7 @@
 import { RouterLink } from "vue-router";
 import Navbar from "@/components/Navbar.vue";
 import ListKost from "@/components/ListKost.vue";
+import Loader from "@/components/Loader.vue";
 </script>
 
 <template>
@@ -20,7 +21,7 @@ import ListKost from "@/components/ListKost.vue";
             <Suspense>
                 <ListKost />
 
-                <template #fallback> Loading... </template>
+                <template #fallback><Loader /></template>
             </Suspense>
         </div>
     </section>

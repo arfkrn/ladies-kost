@@ -1,58 +1,51 @@
 import { createRouter, createWebHistory } from "vue-router";
-import Home from "@/views/Home.vue";
-import Penawaran from "@/views/Penawaran.vue";
-import Detail from "@/views/Detail.vue";
-import AuthLayout from "@/views/AuthLayout.vue";
-import Login from "@/views/Login.vue";
-import Register from "@/views/Register.vue";
-import Checkout from "@/views/Checkout.vue";
 
 const router = createRouter({
-  history: createWebHistory(import.meta.env.BASE_URL),
-  routes: [
-    {
-      path: "/",
-      component: Home,
-    },
-    {
-      path: "/penawaran",
-      name: "penawaran",
-      component: Penawaran,
-    },
-    {
-      path: "/penawaran/detail",
-      name: "detail",
-      component: Detail,
-    },
-    {
-      path: "/checkout",
-      name: "checkout",
-      component: Checkout,
-    },
-    {
-      path: "/auth",
-      component: AuthLayout,
-      children: [
+    history: createWebHistory(import.meta.env.BASE_URL),
+    routes: [
         {
-          path: "/auth/login",
-          component: Login,
+            path: "/",
+            component: () => import("@/views/Home.vue"),
         },
         {
-          path: "/auth/register",
-          component: Register,
+            path: "/penawaran",
+            name: "penawaran",
+            component: () => import("@/views/Penawaran.vue"),
         },
-      ],
+        {
+            path: "/penawaran/detail",
+            name: "detail",
+            component: () => import("@/views/Detail.vue"),
+        },
+        {
+            path: "/checkout",
+            name: "checkout",
+            component: () => import("@/views/Checkout.vue"),
+        },
+        {
+            path: "/auth",
+            component: () => import("@/views/AuthLayout.vue"),
+            children: [
+                {
+                    path: "/auth/login",
+                    component: () => import("@/views/Login.vue"),
+                },
+                {
+                    path: "/auth/register",
+                    component: () => import("@/views/Register.vue"),
+                },
+            ],
+        },
+    ],
+    scrollBehavior(to, from, savedPosition) {
+        if (to.hash) {
+            return {
+                el: to.hash,
+                behavior: "smooth",
+            };
+        }
+        return { top: 0 };
     },
-  ],
-  scrollBehavior(to, from, savedPosition) {
-    if (to.hash) {
-      return {
-        el: to.hash,
-        behavior: "smooth",
-      };
-    }
-    return { top: 0 };
-  },
 });
 
 // Redirect pengguna ke halaman login jika belum login

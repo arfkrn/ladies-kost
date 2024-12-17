@@ -5,7 +5,7 @@ import { ref } from "vue";
 
 const kosts = ref(null);
 
-await axios.get("http://localhost:3000/api/v1/kost").then((res) => {
+await axios.get("http://localhost:4000/api/v1/kost").then((res) => {
     kosts.value = res.data.data;
 });
 </script>
@@ -17,7 +17,7 @@ await axios.get("http://localhost:3000/api/v1/kost").then((res) => {
                 <div class="card-image">
                     <img
                         :src="
-                            'http://localhost:3000/uploads/' +
+                            'http://localhost:4000/uploads/' +
                             kost.gambar[0].imageUrl
                         "
                         alt="thumbnail"

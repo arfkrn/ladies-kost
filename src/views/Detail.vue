@@ -1,26 +1,11 @@
 <script setup>
-import { RouterLink, useRoute } from "vue-router";
-import { onBeforeMount, reactive, ref } from "vue";
-import PriceSelect from "@/components/PriceSelect.vue";
+import { useRoute } from "vue-router";
 import Navbar from "@/components/Navbar.vue";
-import ImageSlideshow from "@/components/ImageSlideshow.vue";
-import { useKostStore } from "@/stores/kostStore";
 import DetailKost from "@/components/DetailKost.vue";
+import Loader from "@/components/Loader.vue";
 
 const route = useRoute();
-const harga = ref("500.000");
-const hargas = ["500.000", "800.000", "3.000.000", "3.500.000"];
-const kostStore = useKostStore();
 const kostId = route.query.id;
-const kost = ref(null);
-const kostIndex = ref(0);
-const monthState = ref(1);
-const state = reactive({ data: {} });
-
-function changeMonth(m) {
-    harga.value = hargas[m - 1];
-    monthState.value = m;
-}
 </script>
 
 <template>
@@ -28,102 +13,6 @@ function changeMonth(m) {
     <Suspense>
         <DetailKost :id="kostId" />
 
-        <template #fallback>Loading...</template>
+        <template #fallback><Loader /></template>
     </Suspense>
 </template>
-
-<style scoped>
-.details {
-    padding: 1.4rem 7%;
-    margin-top: 8rem;
-    margin-left: 2rem;
-    margin-bottom: 4rem;
-}
-
-.details .details-container {
-    -webkit-box-shadow: -1px 7px 14px 0px rgba(166, 161, 166, 1);
-    -moz-box-shadow: -1px 7px 14px 0px rgba(166, 161, 166, 1);
-    box-shadow: -1px 7px 14px 0px rgba(166, 161, 166, 1);
-    padding: 2rem;
-    border-radius: 10px;
-}
-
-.detail-thumbnail img {
-    width: 100%;
-    border-radius: 5px;
-}
-
-.details .details-container .hh {
-    display: flex;
-    align-items: center;
-    text-align: center;
-    margin-bottom: 1.5rem;
-}
-
-.details .details-container .hh span {
-    font-size: 1.3rem;
-    color: black;
-}
-
-.details-container .hh .i-details {
-    color: black;
-    margin-right: 1rem;
-    font-size: 1.3rem;
-}
-
-.details-container .p-p {
-    font-size: 0.9em;
-}
-
-.detail-footer {
-    display: flex;
-    align-items: center;
-    justify-content: end;
-    gap: 2rem;
-    margin-top: 3rem;
-    flex-wrap: wrap;
-}
-
-.detail-footer .harga {
-    font-weight: 700;
-}
-
-.detail-footer .btn-pesan {
-    background-color: #1976d2;
-    color: #fff;
-    padding: 0.6rem 1.2rem;
-    border-radius: 10px;
-}
-
-.detail-footer .btn-pesan:hover {
-    background-color: #1967b4;
-}
-
-@media screen and (max-width: 758px) {
-    .details {
-        margin: 4rem 0 2rem 0;
-    }
-
-    .details-container .hh .i-details {
-        font-size: 0.9rem;
-        margin-right: 0.5rem;
-    }
-
-    .details .details-container .hh span {
-        font-size: 0.9rem;
-    }
-
-    .details-container .p-p {
-        font-size: 0.7rem;
-    }
-
-    .detail-footer .harga {
-        font-size: 0.8rem;
-    }
-
-    .detail-footer .btn-pesan {
-        padding: 0.5rem 1rem;
-        font-size: 0.8rem;
-    }
-}
-</style>
