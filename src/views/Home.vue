@@ -2,11 +2,20 @@
 import { RouterLink } from "vue-router";
 import Navbar from "@/components/Navbar.vue";
 import Footer from "@/components/Footer.vue";
+import { onMounted } from "vue";
+import { useKostStore } from "@/stores/kostStore";
+
+// const kostStore = useKostStore();
+
+// onMounted(() => {
+//     kostStore.fetchKosts();
+// });
 </script>
 
 <template>
     <Navbar />
     <!-- hero section start -->
+
     <section class="hero" id="home">
         <div class="content">
             <h2>Tinggal Dengan Aman Dan</h2>

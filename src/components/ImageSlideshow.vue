@@ -7,7 +7,6 @@ const itemRefs = useTemplateRef("items");
 const props = defineProps({
     images: Array,
 });
-
 function nextSlide() {
     showSlides((slideIndex.value += 1));
 }
