@@ -1,33 +1,11 @@
 <script setup>
 import { RouterLink } from "vue-router";
-import { onMounted, watch } from "vue";
 import Navbar from "@/components/Navbar.vue";
-import { useKostStore } from "@/stores/kostStore";
-import { ref } from "vue";
-
-const kostStore = useKostStore();
-const loading = ref(true);
-
-// setTimeout(() => {
-//     loading.value = false;
-// }, 1000);
-
-// const data = ref(null);
-// const loaded = ref(false);
-
-// watch(data, async (newData, oldData) => {
-//     await kostStore.fetchKosts();
-//     loaded.value = true;
-// })
-
-// onMounted(() => {
-//     kostStore.fetchKosts();
-// });
-// console.log(kostStore.kosts);
+import ListKost from "@/components/ListKost.vue";
+import Loader from "@/components/Loader.vue";
 </script>
 
 <template>
-    <div v-if="loading">cihuyyyy</div>
     <Navbar />
     <section class="menu">
         <div class="menu-n">
@@ -40,49 +18,11 @@ const loading = ref(true);
         </div>
 
         <div class="row">
-            <!-- <div class="menu-card" v-for="kost in kostStore.kosts">
-                <RouterLink :to="{ name: 'detail', query: { id: kost.id } }">
-                    <div class="card-content">
-                        <div class="card-image">
-                            <img
-                                :src="
-                                    'http://localhost:3000/uploads/' +
-                                    kost.gambar[0].imageUrl
-                                "
-                                alt="thumbnail"
-                            />
-                        </div>
-                        <div class="card-detail">
-                            <h2>{{ kost.nama }}</h2>
-                            <p class="alamat">Metro, Lampung</p>
-                            <div class="harga">
-                                <p>Mulai</p>
-                                <h1>
-                                    IDR {{ kost.harga.toLocaleString("id-ID") }}
-                                    <span>/bulan</span>
-                                </h1>
-                            </div>
-                        </div>
-                    </div>
-                </RouterLink>
-            </div> -->
-            <div class="menu-card">
-                <RouterLink to="/penawaran/detail">
-                    <div class="card-content">
-                        <div class="card-image">
-                            <img src="../assets/image/kamar3 2.png" alt="" />
-                        </div>
-                        <div class="card-detail">
-                            <h2>Kamar 1</h2>
-                            <p class="alamat">Metro, Lampung</p>
-                            <div class="harga">
-                                <p>Mulai</p>
-                                <h1>IDR 500.000<span>/bulan</span></h1>
-                            </div>
-                        </div>
-                    </div>
-                </RouterLink>
-            </div>
+            <Suspense>
+                <ListKost />
+
+                <template #fallback><Loader /></template>
+            </Suspense>
         </div>
     </section>
 </template>
@@ -122,54 +62,6 @@ const loading = ref(true);
     display: flex;
     flex-direction: column;
     gap: 1rem;
-}
-
-.menu .row .menu-card {
-    border-radius: 10px;
-    padding: 1rem;
-    -webkit-box-shadow: -1px 7px 14px 0px rgba(166, 161, 166, 1);
-    -moz-box-shadow: -1px 7px 14px 0px rgba(166, 161, 166, 1);
-    box-shadow: -1px 7px 14px 0px rgba(166, 161, 166, 1);
-}
-
-.card-image {
-    width: 200px;
-}
-
-.menu .row .menu-card img {
-    width: 100%;
-    height: auto;
-    border-radius: 4px;
-}
-
-.card-detail {
-    color: #000;
-}
-
-.menu-card .card-detail h2 {
-    font-size: 1.1rem;
-}
-
-.card-detail p {
-    font-size: 0.9rem;
-}
-
-.card-detail .alamat {
-    color: rgb(177, 177, 177);
-    font-size: 0.8rem;
-}
-
-.harga {
-    margin-top: 1rem;
-}
-
-.harga h1 {
-    font-size: 1rem;
-}
-
-.harga span {
-    font-weight: 500;
-    font-size: 0.7rem;
 }
 
 @media screen and (max-width: 758px) {

@@ -14,7 +14,8 @@ import { useKostStore } from "@/stores/kostStore";
 
 <template>
     <Navbar />
-    <!-- hero xection start -->
+    <!-- hero section start -->
+
     <section class="hero" id="home">
         <div class="content">
             <h2>Tinggal Dengan Aman Dan</h2>
@@ -37,51 +38,51 @@ import { useKostStore } from "@/stores/kostStore";
             <div class="fasilitas-content kamar">
                 <img src="../assets/image/image 2.png" alt="" />
                 <h1>Tempat Tidur</h1>
-                <!-- <p>
+                <p>
                     Nikmati kenyamanan tempat tidur yang dirancang khusus untuk
                     memberikan kualitas tidur terbaik. Dengan kasur yang empuk
                     dan bantal yang lembut, istirahat Anda akan terasa lebih
                     nyenyak dan menyegarkan.
-                </p> -->
+                </p>
             </div>
             <div class="fasilitas-content kamar">
                 <img src="../assets/image/wifi-sign 1.png" alt="" />
                 <h1>Wifi</h1>
-                <!-- <p>
+                <p>
                     Tetap terhubung dengan internet super cepat yang tersedia di
                     seluruh area. Nikmati pengalaman browsing tanpa hambatan,
                     streaming tanpa buffering, dan akses informasi kapan saja.
-                </p> -->
+                </p>
             </div>
             <div class="fasilitas-content kamar">
                 <img src="../assets/image/laundry-machine 1.png" alt="" />
                 <h1>Laundry</h1>
-                <!-- <p>
+                <p>
                     Layanan laundry kami memastikan pakaian Anda tetap bersih
                     dan rapi. Dengan peralatan modern dan proses yang cepat,
                     Anda bisa fokus pada aktivitas lain tanpa khawatir soal
                     cucian.
-                </p> -->
+                </p>
             </div>
             <div class="fasilitas-content kamar">
                 <img src="../assets/image/image 1.png" alt="" />
                 <h1>Kamar Mandi</h1>
-                <!-- <p>
+                <p>
                     Kamar mandi kami dilengkapi dengan fasilitas modern seperti
                     shower air panas dan peralatan mandi lengkap. Kebersihan dan
                     kenyamanan menjadi prioritas utama untuk pengalaman mandi
                     yang menyenangkan.
-                </p> -->
+                </p>
             </div>
 
             <div class="fasilitas-content kamar">
                 <img src="../assets/image/image 3.png" alt="" />
                 <h1>Lemari Pakaian</h1>
-                <!-- <p>
+                <p>
                     Lemari pakaian yang luas dan fungsional siap membantu Anda
                     menyimpan pakaian dan barang pribadi dengan rapi. Desainnya
                     yang minimalis menambah estetika ruangan Anda.
-                </p> -->
+                </p>
             </div>
         </div>
     </section>
@@ -214,7 +215,7 @@ import { useKostStore } from "@/stores/kostStore";
 }
 
 .fasilitas .fasilitas-content {
-    width: 10rem;
+    width: 19rem;
     display: flex;
     border-radius: 10px;
     -webkit-box-shadow: 0px 0px 15px 2px rgba(138, 134, 138, 0.55);
@@ -225,20 +226,19 @@ import { useKostStore } from "@/stores/kostStore";
 }
 
 .fasilitas .fasilitas-content.kamar img {
-    width: 4.5rem;
+    width: 5rem;
     margin-bottom: 2rem;
     align-self: center;
 }
 
 .fasilitas .fasilitas-content.kamar p {
-    font-size: 0.6rem;
+    font-size: 0.9rem;
     /* text-align: justify; */
 }
 
 .fasilitas .fasilitas-content.kamar h1 {
-    font-size: 0.9rem;
-    /* margin-bottom: 1rem; */
-    text-align: center;
+    font-size: 1.1rem;
+    margin-bottom: 1rem;
 }
 
 /* tentang */

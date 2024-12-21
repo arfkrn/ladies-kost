@@ -1,15 +1,14 @@
 <script setup>
 import PaymentSelect from "@/components/PaymentSelect.vue";
-import { onBeforeMount, onMounted, reactive } from "vue";
+import { onMounted, reactive, ref } from "vue";
 import { useRoute } from "vue-router";
-import { useKostStore } from "@/stores/kostStore";
+import axios from "axios";
+import Loader from "@/components/Loader.vue";
 
 const route = useRoute();
-const state = reactive({ data: {} });
-const kostStore = useKostStore();
-// const kostIndex = route.query.id;
-const queryParam = route.query.durasi;
-const result = reactive({ data: { harga: 0, addon: 0, durasi: null } });
+const { id, durasi } = route.query;
+const kost = ref(null);
+const result = reactive({ data: { harga: 0, addon: 0, waktu: null } });
 let total = 0;
 const harga = {
     i1: 500000,
@@ -19,122 +18,120 @@ const addon = {
     i1: 300000,
     i2: 500000,
 };
-const durasi = {
+const waktu = {
     i1: "1 Bulan",
     i2: "1 Tahun",
 };
 
+await axios
+    .get("http://localhost:4000/api/v1/kost/" + id)
+    .then((res) => (kost.value = res.data.data));
+
 function calculateTotal() {
-    switch (queryParam) {
+    switch (durasi) {
         case "1":
             result.data.harga = harga.i1;
-            result.data.durasi = durasi.i1;
+            result.data.waktu = waktu.i1;
             break;
         case "2":
             result.data.harga = harga.i1;
             result.data.addon = addon.i1;
-            result.data.durasi = durasi.i1;
+            result.data.waktu = waktu.i1;
             break;
         case "3":
             result.data.harga = harga.i2;
-            result.data.durasi = durasi.i2;
+            result.data.waktu = waktu.i2;
             break;
         case "4":
             result.data.harga = harga.i2;
             result.data.addon = addon.i2;
-            result.data.durasi = durasi.i2;
+            result.data.waktu = waktu.i2;
             break;
     }
 
     total = result.data.harga + result.data.addon;
 }
 
-function getData() {
-    kostStore.fetchKosts();
-    state.data = kostStore.kosts[kostIndex];
-}
-
-// onBeforeMount(() => {
-//     getData();
-// });
-
 onMounted(calculateTotal);
 </script>
 
 <template>
-    <div class="checkout-container">
-        <div class="checkout-header">
-            <div class="back">
-                <RouterLink :to="{ name: 'detail' }"
-                    ><font-awesome-icon
-                        class="kembali"
-                        :icon="['fas', 'arrow-left']"
-                    /><span>Pesan Kamar</span></RouterLink
-                >
-            </div>
-        </div>
-
-        <div class="checkout-content">
-            <div class="detail-kamar">
-                <img src="../assets/image/kamar3 2.png" alt="" />
-                <!-- <img
-                    :src="
-                        'http://localhost:3000/uploads/' +
-                        state.data.gambar[0].imageUrl
-                    "
-                    alt=""
-                    class="detail-img"
-                /> -->
-                <div class="detail-info">
-                    <h1 class="detail-title">Kamar 1</h1>
+    <Suspense>
+        <div class="checkout-container">
+            <div class="checkout-header">
+                <div class="back">
+                    <RouterLink :to="{ name: 'detail', query: { id } }"
+                        ><font-awesome-icon
+                            class="kembali"
+                            :icon="['fas', 'arrow-left']"
+                        /><span>Pesan Kamar</span></RouterLink
+                    >
                 </div>
             </div>
-            <div class="rincian-container">
-                <div class="rincian-pembayaran">
-                    <h1 class="rincian-title">Rincian pembayaran</h1>
-                    <div class="rincian-durasi">
-                        <div class="durasi">
-                            <p>Durasi</p>
-                            <p class="waktu">{{ result.data.durasi }}</p>
-                        </div>
-                        <p>Rp{{ total.toLocaleString("id-ID") }}</p>
+
+            <div class="checkout-content">
+                <div class="detail-kamar">
+                    <img
+                        :src="
+                            'http://localhost:4000/uploads/' +
+                            kost.gambar[0].imageUrl
+                        "
+                        alt=""
+                        class="detail-img"
+                    />
+                    <div class="detail-info">
+                        <h1 class="detail-title">{{ kost.nama }}</h1>
                     </div>
-                    <div class="rincian-addon">
-                        <div class="addon">
-                            <p>Addon</p>
-                            <p>WiFi</p>
+                </div>
+                <div class="rincian-container">
+                    <div class="rincian-pembayaran">
+                        <h1 class="rincian-title">Rincian pembayaran</h1>
+                        <div class="rincian-durasi">
+                            <div class="durasi">
+                                <p>Durasi</p>
+                                <p class="waktu">{{ result.data.waktu }}</p>
+                            </div>
+                            <p>Rp{{ total.toLocaleString("id-ID") }}</p>
                         </div>
-                        <p>Rp {{ result.data.addon }}</p>
+                        <div class="rincian-addon">
+                            <div class="addon">
+                                <p>Addon</p>
+                                <p>WiFi</p>
+                            </div>
+                            <p>Rp {{ result.data.addon }}</p>
+                        </div>
+                        <div class="rincian-total">
+                            <div>
+                                <p>Total</p>
+                                <p class="total">
+                                    Rp{{ total.toLocaleString("id-ID") }}
+                                </p>
+                            </div>
+                        </div>
                     </div>
-                    <div class="rincian-total">
+
+                    <div class="metode-pembayaran">
+                        <h1>Pilih Metode Pembayaran</h1>
+                        <div class="payment-select">
+                            <PaymentSelect />
+                        </div>
+                    </div>
+
+                    <div class="pesan">
+                        <div class="pesan-detail">
+                            <p>Total Bayar</p>
+                            <h1>Rp{{ total.toLocaleString("id-ID") }}</h1>
+                        </div>
                         <div>
-                            <p>Total</p>
-                            <p class="total">
-                                Rp{{ total.toLocaleString("id-ID") }}
-                            </p>
+                            <button class="pesan-btn">Pesan Sekarang</button>
                         </div>
-                    </div>
-                </div>
-
-                <div class="metode-pembayaran">
-                    <h1>Pilih Metode Pembayaran</h1>
-                    <div class="payment-select">
-                        <PaymentSelect />
-                    </div>
-                </div>
-
-                <div class="pesan">
-                    <div class="pesan-detail">
-                        <p>Total Bayar</p>
-                        <h1>Rp{{ total.toLocaleString("id-ID") }}</h1>
-                    </div>
-                    <div>
-                        <button class="pesan-btn">Pesan Sekarang</button>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
+
+        <template #fallback><Loader /></template>
+    </Suspense>
 </template>
 
 <style scoped>

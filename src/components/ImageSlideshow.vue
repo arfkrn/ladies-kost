@@ -1,21 +1,12 @@
 <script setup>
-import { ref, onMounted, useTemplateRef, onBeforeMount } from "vue";
-import { useKostStore } from "@/stores/kostStore";
+import { ref, onMounted, useTemplateRef } from "vue";
 
 const slideIndex = ref(1);
-const kostStore = useKostStore();
-const images = ref([]);
 const itemRefs = useTemplateRef("items");
 
 const props = defineProps({
-    kostIndex: Number,
+    images: Array,
 });
-
-function getData() {
-    kostStore.fetchKosts();
-    images.value = kostStore.kosts[props.kostIndex].gambar;
-}
-
 function nextSlide() {
     showSlides((slideIndex.value += 1));
 }
@@ -24,60 +15,32 @@ function prevSlide() {
     showSlides((slideIndex.value -= 1));
 }
 
-// onBeforeMount(() => {
-//     getData();
-// });
-
 onMounted(() => {
     showSlides(1);
 });
 
 function showSlides(n) {
     let i;
-    let slides = document.getElementsByClassName("slide");
-    if (n > slides.length) {
+    if (n > itemRefs.value.length) {
         slideIndex.value = 1;
     }
     if (n < 1) {
-        slideIndex.value = slides.length;
+        itemRefs.value = itemRefs.value.length;
     }
-    for (i = 0; i < slides.length; i++) {
-        slides[i].style.display = "none";
+    for (i = 0; i < itemRefs.value.length; i++) {
+        itemRefs.value[i].style.display = "none";
     }
-    slides[slideIndex.value - 1].style.display = "block";
-
-    // let i;
-    // if (n > itemRefs.value.length) {
-    //     slideIndex.value = 1;
-    // }
-    // if (n < 1) {
-    //     itemRefs.value = itemRefs.value.length;
-    // }
-    // for (i = 0; i < itemRefs.value.length; i++) {
-    //     itemRefs.value[i].style.display = "none";
-    // }
-    // itemRefs.value[slideIndex.value - 1].style.display = "block";
+    itemRefs.value[slideIndex.value - 1].style.display = "block";
 }
 </script>
 
 <template>
     <div class="slideshow-container">
-        <!-- <div class="slide fade" v-for="image in images" ref="items">
+        <div class="slide fade" v-for="image in props.images" ref="items">
             <img
-                :src="'http://localhost:3000/uploads/' + image.imageUrl"
+                :src="'http://localhost:4000/uploads/' + image.imageUrl"
                 alt=""
             />
-        </div> -->
-        <div class="slide fade">
-            <img src="../assets/image/kamar3 2.png" alt="" />
-        </div>
-
-        <div class="slide fade">
-            <img src="../assets/image/kamar2 1.png" alt="" />
-        </div>
-
-        <div class="slide fade">
-            <img src="../assets/image/kamar3 1.png" alt="" />
         </div>
 
         <a class="prev" @click="prevSlide">&#10094;</a>
